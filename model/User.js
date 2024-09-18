@@ -31,10 +31,13 @@ const UserSchema = mongoose.Schema({
         required:true,
         min:6,
         max:1056
-    }
-},
-{
-    versionKey:false
+    },
+    cart:[
+        {
+            productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+            quantity: { type: Number, default: 1 }
+        }
+    ]
 }
 )
 
