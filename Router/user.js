@@ -17,7 +17,7 @@ router.post('/signup',async(req,res)=>{
     if(emailCheck || userCheck){
         return res.status(400).send({message:'Email or Username is already in use'})
     }
-    const salt = await bcryptjs.genSalt(5)
+    const salt = await bcryptjs.genSalt(10)
 
     const hashlastname = await bcryptjs.hash(req.body.lastname,salt)
     const hashpassword = await bcryptjs.hash(req.body.password,salt)
@@ -54,7 +54,7 @@ router.post('/login',async(req,res)=>{
     if(!passwordCheck){
         return res.status(400).send({message:'Incorrect password'})
     }
-    const token = jsonwebtoken.sign({_id:userNameCheck._id},process.env.TOKEN)
+    const token = jsonwebtoken.sign({ _id: userNameCheck._id }, process.env.TOKEN, { expiresIn: '1h' })
     res.header('auth-token',token).send({'auth-token':token})
 })
 module.exports = router

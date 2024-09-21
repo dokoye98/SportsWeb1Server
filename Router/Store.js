@@ -1,1 +1,1 @@
-const Store = require('../model/Store')
+const Store = require('../model/Product')

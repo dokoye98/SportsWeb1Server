@@ -1,12 +1,22 @@
 const express = require('express')
 const {restart} = require('nodemon')
 const app = express()
+const bodyParser = require('body-parser')
 const userRouter = require('./Router/user')
-const statRouter = require('./Router/stats')
+const cartRouter = require('./Router/cart')
+const orderRouter = require('./Router/order')
+const productRouter = require('./Router/product')
+const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv/config')
+app.use(cors())
+app.use(bodyParser.json())
+const PORT = process.env.PORT  || 5000
 app.use('/account',userRouter)
-app.use('/stats',statRouter)
+app.use('/products',productRouter)
+app.use('/product/order',orderRouter)
+app.use('/account/cart',cartRouter)
+
 
 
 
@@ -15,6 +25,6 @@ mongoose.connect(process.env.DB_CONNECTOR).then(()=>{
 })
 
 
-app.listen(3000,()=>{
-    console.log('Sports is live')
+app.listen(PORT,()=>{
+    console.log(`Sports is live ${PORT}`)
 })
