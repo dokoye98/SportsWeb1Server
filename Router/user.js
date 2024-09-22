@@ -54,7 +54,31 @@ router.post('/login',async(req,res)=>{
     if(!passwordCheck){
         return res.status(400).send({message:'Incorrect password'})
     }
-    const token = jsonwebtoken.sign({ _id: userNameCheck._id }, process.env.TOKEN, { expiresIn: '1h' })
-    res.header('auth-token',token).send({'auth-token':token})
+    const accessToken = jsonwebtoken.sign({ _id: userNameCheck._id }, process.env.TOKEN, { expiresIn: '1h' })
+    const refreshToken = jsonwebtoken.sign({_id:userNameCheck._id}, process.env.REFRESH_TOKEN,{expiresIn: '7h'})
+
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
+
+    res.header('auth-token', accessToken).send({ 'auth-token': accessToken })
+
+})
+
+
+router.post('/refresh-token',(req,res)=>{
+    const refreshToken = req.cookies.refreshToken
+    if(!refreshToken){
+        return res.status(401).send('Access Denied')
+    }
+    try{
+        const verified = jsonwebtoken.verify(refreshToken,process.env.REFRESH_TOKEN)
+    
+
+    const newAccessToken = jsonwebtoken.sign({_id:verified._id},process.env.TOKEN,{expiresIn:'1h'})
+    res.header('auth-token',newAccessToken).send({'auth-token':newAccessToken})
+
+}catch(err){
+        return res.status(400).send({message:'Invalid refresh token'})
+    }
+
 })
 module.exports = router
