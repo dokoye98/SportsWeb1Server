@@ -56,25 +56,29 @@ router.delete('/delete/:id', async (req, res) => {
 })
 
 router.post('/add', async (req, res) => {
-    const { error } = productValidation(req.body)
-    if (error) {
+  const { error } = productValidation(req.body)
+  if (error) {
       return res.status(400).json({ message: error.details[0].message })
-    }
-  
-    const newProduct = new Product({
+  }
+
+  const newProduct = new Product({
       name: req.body.name,
-      Stock: req.body.Stock,
-      Description: req.body.Description,
-      Price: req.body.Price,
-      Colours: req.body.Colours
-    })
-    try {
-        const savedProduct = await newProduct.save()
-        res.status(201).json({ message: 'Product added successfully', product: savedProduct })
-      } catch (error) {
-        res.status(500).json({ message: 'Error adding product', error })
-      }
-    })
+      description: req.body.description,
+      price: req.body.price,
+      stock: req.body.stock,
+      images: req.body.images,
+      colours: req.body.colours,
+      sizes: req.body.sizes
+  })
+
+  try {
+      const savedProduct = await newProduct.save()
+      res.status(201).json({ message: 'Product added successfully', product: savedProduct })
+  } catch (error) {
+      res.status(500).json({ message: 'Error adding product', error })
+  }
+})
+
 
 
 

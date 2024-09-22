@@ -92,9 +92,9 @@ const productValidation = (data) => {
       description: joi.string().min(10).required(),
       price: joi.number().positive().required(),
       stock: joi.number().integer().min(0).required(),
-      images: joi.array().items(Joi.string().uri()),
-      colours: joi.array().items(Joi.string()),
-      sizes: joi.array().items(Joi.string())
+      images: joi.array().items(joi.string().uri()),
+      colours: joi.array().items(joi.string()),
+      sizes: joi.array().items(joi.string())
   })
   return schema.validate(data)
 }
