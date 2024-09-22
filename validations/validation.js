@@ -87,53 +87,17 @@ const loginValidation = (data) => {
 }
 
 const productValidation = (data) => {
-    const schemaValidation = joi.object({
-      name: joi.string()
-        .min(1)
-        .max(256)
-        .required()
-        .messages({
-          'string.base': 'Product name must be a string',
-          'string.empty': 'Product name is required',
-          'any.required': 'Product name is required'
-        }),
-      Stock: joi.number()
-        .min(1)
-        .required()
-        .messages({
-          'number.base': 'Stock must be a number',
-          'number.min': 'Stock must be at least 1',
-          'any.required': 'Stock is required'
-        }),
-      Description: joi.string()
-        .min(5)
-        .max(1000)
-        .required()
-        .messages({
-          'string.base': 'Description must be a string',
-          'string.empty': 'Description is required',
-          'string.min': 'Description must be at least 5 characters long',
-          'any.required': 'Description is required'
-        }),
-      Price: joi.number()
-        .min(0.01)
-        .required()
-        .messages({
-          'number.base': 'Price must be a number',
-          'number.min': 'Price must be at least 0.01',
-          'any.required': 'Price is required'
-        }),
-      Colours: joi.array().items(joi.string())
-        .min(1)
-        .required()
-        .messages({
-          'array.base': 'Colours must be an array of strings',
-          'array.min': 'At least one colour is required',
-          'any.required': 'Colours are required'
-        })
-    })
-    return schemaValidation.validate(data)
-  }
+  const schema = joi.object({
+      name: joi.string().min(3).required(),
+      description: joi.string().min(10).required(),
+      price: joi.number().positive().required(),
+      stock: joi.number().integer().min(0).required(),
+      images: joi.array().items(Joi.string().uri()),
+      colours: joi.array().items(Joi.string()),
+      sizes: joi.array().items(Joi.string())
+  })
+  return schema.validate(data)
+}
 
 module.exports.signUpValidaiton = signUpValidaiton
 module.exports.loginValidation = loginValidation

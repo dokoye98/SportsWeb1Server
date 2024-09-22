@@ -18,11 +18,12 @@ router.post('/signup',async(req,res)=>{
         return res.status(400).send({message:'Email or Username is already in use'})
     }
     const salt = await bcryptjs.genSalt(10)
-
+    const hashfirstname = await bcryptjs.hash(req.body.firstname,salt)
     const hashlastname = await bcryptjs.hash(req.body.lastname,salt)
     const hashpassword = await bcryptjs.hash(req.body.password,salt)
+   
     const dataFormat = new User({
-        firstname:req.body.firstname,
+        firstname:hashfirstname,
         lastname:hashlastname,
         username:req.body.username,
         email:req.body.email,
