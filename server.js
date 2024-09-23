@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 const PORT = process.env.PORT  || 5000
 app.use('/account',userRouter)
 app.use('/store',productRouter)
-app.use('/product/order',orderRouter)
+app.use('/store/order',orderRouter)
 app.use('/account/cart',cartRouter)
 
 
