@@ -10,6 +10,7 @@ router.post('/add', val, async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' })
 
         const product = await Product.findById(req.body.productId)
+       // console.log({prod: product})
         if (!product) return res.status(404).json({ message: 'Product not found' })
 
         const cartItem = user.cart.find(item => item.productId.toString() === product._id.toString())
